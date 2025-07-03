@@ -7,6 +7,7 @@ class DashboardPage extends StatelessWidget {
   Future<void> logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('token');
+    // ignore: use_build_context_synchronously
     Navigator.pushReplacementNamed(context, '/');
   }
 
