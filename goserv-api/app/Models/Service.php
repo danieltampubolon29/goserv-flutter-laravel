@@ -3,14 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Service extends Model
 {
-    use HasFactory;
-
-    protected $table = 'services';
-
     protected $fillable = [
         'customer_name',
         'tanggal',
@@ -18,10 +13,10 @@ class Service extends Model
         'nomor_polisi',
         'service_items',
         'harga',
+        'point',
     ];
 
     protected $casts = [
-        'service_items' => 'array', 
-        'tanggal' => 'date',
+        'service_items' => 'array', // otomatis decode/encode json
     ];
 }

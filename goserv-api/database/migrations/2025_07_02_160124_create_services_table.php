@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nomor_polisi');
             $table->json('service_items'); // Simpan array jenis service
             $table->integer('harga');
+            $table->integer('point');
             $table->timestamps();
         });
     }

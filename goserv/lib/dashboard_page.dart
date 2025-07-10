@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
+
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    if (index == 1) {
+      Navigator.pushNamed(context, '/service');
+    } else if (index == 3) {
+      Navigator.pushNamed(context, '/mission');
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
 
   Future<void> logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -115,7 +134,7 @@ class DashboardPage extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   const Text(
-                                    "IDR 81,710,331.93",
+                                    "710",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
@@ -123,10 +142,6 @@ class DashboardPage extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                              ),
-                              const Icon(
-                                Icons.remove_red_eye,
-                                color: Colors.grey,
                               ),
                             ],
                           ),
@@ -148,13 +163,13 @@ class DashboardPage extends StatelessWidget {
                           Text(
                             "Tukar Point",
                             style: TextStyle(
-                              color: Colors.amber,
+                              color: Colors.black,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           Icon(
                             Icons.chevron_right,
-                            color: Colors.amber,
+                            color: Colors.black,
                             size: 28,
                           ),
                         ],
@@ -206,12 +221,15 @@ class DashboardPage extends StatelessWidget {
 
       // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.edit_document), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.analytics), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.assignment), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
         ],
       ),
