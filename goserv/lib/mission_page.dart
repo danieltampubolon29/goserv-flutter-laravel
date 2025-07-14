@@ -18,7 +18,7 @@ class MissionPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "GoServ",
+                    "GoServ - Mission",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Row(
@@ -50,7 +50,11 @@ class MissionPage extends StatelessWidget {
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
-          if (index != 3) {
+          if (index == 1) {
+            Navigator.pushNamed(context, '/service');
+          } else if (index == 2) {
+            Navigator.pushNamed(context, '/history');
+          } else if (index != 3) {
             Navigator.pushReplacementNamed(context, '/dashboard');
           }
         },
@@ -58,7 +62,7 @@ class MissionPage extends StatelessWidget {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.edit_document), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.analytics), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.assignment), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
         ],
@@ -66,4 +70,3 @@ class MissionPage extends StatelessWidget {
     );
   }
 }
-

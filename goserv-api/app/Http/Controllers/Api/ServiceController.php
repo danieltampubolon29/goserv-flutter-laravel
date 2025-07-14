@@ -2,12 +2,26 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Service;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
 {
+
+    public function userHistory()
+    {
+        $userId = Auth::id();
+
+        $services = Service::where('user_id', $userId)->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $services
+        ]);
+    }
+
     public function index()
     {
         return response()->json(Service::all());
@@ -35,7 +49,10 @@ class ServiceController extends Controller
             'point' => $request->point,
         ]);
 
-        return response()->json($service, 201);
+        return response()->json([
+            'message' => 'Service berhasil ditambahkan',
+            'data' => $service
+        ], 201);
     }
 
     public function show($id)
@@ -67,7 +84,10 @@ class ServiceController extends Controller
             'point' => $request->point,
         ]);
 
-        return response()->json($service);
+        return response()->json([
+            'message' => 'Service berhasil diperbarui',
+            'data' => $service
+        ]);
     }
 
     public function destroy($id)
@@ -75,6 +95,9 @@ class ServiceController extends Controller
         $service = Service::findOrFail($id);
         $service->delete();
 
-        return response()->json(['message' => 'Service deleted']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Service berhasil dihapus'
+        ]);
     }
 }

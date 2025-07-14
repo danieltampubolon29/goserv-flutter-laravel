@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goserv/history_page.dart';
 import 'welcome_page.dart';
 import 'login_page.dart';
 import 'register_page.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         '/dashboard': (context) => const DashboardPage(),
         '/mission': (context) => const MissionPage(),
         '/service': (context) => const ServicePage(),
+        '/history': (context) => const HistoryPage(), 
       },
     );
   }

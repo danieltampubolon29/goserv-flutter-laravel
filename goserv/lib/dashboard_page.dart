@@ -12,16 +12,19 @@ class _DashboardPageState extends State<DashboardPage> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    if (index == 1) {
-      Navigator.pushNamed(context, '/service');
-    } else if (index == 3) {
-      Navigator.pushNamed(context, '/mission');
-    } else {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
+  if (index == 1) {
+    Navigator.pushNamed(context, '/service');
+  } else if (index == 2) {
+    Navigator.pushNamed(context, '/history');
+  } else if (index == 3) {
+    Navigator.pushNamed(context, '/mission');
+  } else {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
+}
+
 
   Future<void> logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -44,7 +47,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "GoServ",
+                    "GoServ - Dashboard",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Row(
@@ -228,7 +231,7 @@ class _DashboardPageState extends State<DashboardPage> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.edit_document), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.analytics), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.assignment), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
         ],

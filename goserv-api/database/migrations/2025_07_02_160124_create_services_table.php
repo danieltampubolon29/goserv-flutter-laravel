@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->string('jenis_kendaraan');
             $table->string('nomor_polisi');
-            $table->json('service_items'); // Simpan array jenis service
+            $table->json('service_items');
             $table->integer('harga');
             $table->integer('point');
             $table->timestamps();
