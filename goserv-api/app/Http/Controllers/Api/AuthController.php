@@ -26,6 +26,7 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $token,
+            'role' => $user->role,
             'user' => $user
         ]);
     }
@@ -46,6 +47,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'customer',
         ]);
 
         $token = $user->createToken('flutter-token')->plainTextToken;
@@ -53,6 +55,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'User created successfully',
             'token' => $token,
+            'role' => $user->role, 
             'user' => $user
         ]);
     }

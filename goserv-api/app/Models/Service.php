@@ -24,9 +24,8 @@ class Service extends Model
         'service_items' => 'array'
     ];
 
-    // Tambah relasi ke User
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 }

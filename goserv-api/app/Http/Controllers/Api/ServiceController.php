@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -9,6 +10,18 @@ use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
 {
+    public function searchCustomers(Request $request)
+    {
+        $query = $request->input('query');
+        $customers = User::where('role', 'customer')
+            ->where('name', 'like', "%$query%")
+            ->select('id', 'name')
+            ->limit(10)
+            ->get();
+
+        return response()->json($customers);
+    }
+
 
     public function userHistory()
     {
@@ -30,6 +43,7 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'user_id' => 'required|exists:users,id',
             'customer_name' => 'required|string',
             'tanggal' => 'required|date',
             'jenis_kendaraan' => 'required|string',
@@ -40,6 +54,7 @@ class ServiceController extends Controller
         ]);
 
         $service = Service::create([
+            'user_id' => $request->user_id,
             'customer_name' => $request->customer_name,
             'tanggal' => $request->tanggal,
             'jenis_kendaraan' => $request->jenis_kendaraan,
@@ -65,6 +80,7 @@ class ServiceController extends Controller
         $service = Service::findOrFail($id);
 
         $request->validate([
+            'user_id' => 'required|exists:users,id',
             'customer_name' => 'required|string',
             'tanggal' => 'required|date',
             'jenis_kendaraan' => 'required|string',
@@ -75,6 +91,7 @@ class ServiceController extends Controller
         ]);
 
         $service->update([
+            'user_id' => $request->user_id,
             'customer_name' => $request->customer_name,
             'tanggal' => $request->tanggal,
             'jenis_kendaraan' => $request->jenis_kendaraan,

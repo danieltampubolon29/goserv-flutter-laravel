@@ -36,11 +36,13 @@ class _LoginPageState extends State<LoginPage> {
       final data = jsonDecode(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', data['token']);
-      Navigator.pushReplacementNamed(context, '/dashboard');
-    } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Login gagal')));
+      await prefs.setString('role', data['role']); // Simpan role
+
+      if (data['role'] == 'admin') {
+        Navigator.pushReplacementNamed(context, '/dashboard_admin');
+      } else {
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      }
     }
   }
 
@@ -108,7 +110,10 @@ class _LoginPageState extends State<LoginPage> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {},
-                        child: const Text('Forgot Password?', style: TextStyle(color: Colors.orange)),
+                        child: const Text(
+                          'Forgot Password?',
+                          style: TextStyle(color: Colors.orange),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -125,8 +130,10 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             onPressed: login,
-                            child: const Text('Sign In',
-                            style: TextStyle(color: Colors.white)),
+                            child: const Text(
+                              'Sign In',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                     const SizedBox(height: 16),

@@ -10,7 +10,7 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
   List<Map<String, dynamic>> _history = [];
   final String baseUrl = 'http://127.0.0.1:8000'; // Sesuaikan IP jika perlu
   late String _token; // Simpan token Sanctum di sini
@@ -42,7 +42,8 @@ class _HistoryPageState extends State<HistoryPage> {
           if (item['service_items'] is String) {
             try {
               final decoded = jsonDecode(item['service_items']);
-              item['service_items'] = decoded is List ? decoded.cast<String>() : [];
+              item['service_items'] =
+                  decoded is List ? decoded.cast<String>() : [];
             } catch (e) {
               item['service_items'] = [];
             }
@@ -55,13 +56,15 @@ class _HistoryPageState extends State<HistoryPage> {
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal memuat riwayat: ${response.reasonPhrase}')),
+          SnackBar(
+            content: Text('Gagal memuat riwayat: ${response.reasonPhrase}'),
+          ),
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
     }
   }
 
@@ -69,14 +72,19 @@ class _HistoryPageState extends State<HistoryPage> {
     if (index == 0) {
       Navigator.pushReplacementNamed(context, '/dashboard');
     } else if (index == 1) {
-      Navigator.pushReplacementNamed(context, '/service');
-    } else if (index == 3) {
+      // Index 1 adalah halaman saat ini (History), tidak perlu aksi.
+    } else if (index == 2) {
       Navigator.pushReplacementNamed(context, '/mission');
-    } else {
-      setState(() {
-        _selectedIndex = index;
-      });
+    } else if (index == 3) {
+      Navigator.pushReplacementNamed(
+        context,
+        '/settings',
+      ); 
     }
+
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -112,38 +120,42 @@ class _HistoryPageState extends State<HistoryPage> {
               const SizedBox(height: 12),
 
               Expanded(
-                child: _history.isEmpty
-                    ? const Center(child: Text("Belum ada riwayat layanan."))
-                    : ListView.builder(
-                        itemCount: _history.length,
-                        itemBuilder: (context, index) {
-                          final item = _history[index];
-                          return Card(
-                            elevation: 2,
-                            margin: const EdgeInsets.only(bottom: 10),
-                            child: ListTile(
-                              leading: const Icon(Icons.history),
-                              title: Text(item['customer_name']),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Tanggal: ${item['tanggal']}'),
-                                  Wrap(
-                                    spacing: 4,
-                                    children: (item['service_items'] as List)
-                                        .map((s) => Chip(label: Text(s)))
-                                        .toList(),
-                                  )
-                                ],
+                child:
+                    _history.isEmpty
+                        ? const Center(
+                          child: Text("Belum ada riwayat layanan."),
+                        )
+                        : ListView.builder(
+                          itemCount: _history.length,
+                          itemBuilder: (context, index) {
+                            final item = _history[index];
+                            return Card(
+                              elevation: 2,
+                              margin: const EdgeInsets.only(bottom: 10),
+                              child: ListTile(
+                                leading: const Icon(Icons.history),
+                                title: Text(item['customer_name']),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Tanggal: ${item['tanggal']}'),
+                                    Wrap(
+                                      spacing: 4,
+                                      children:
+                                          (item['service_items'] as List)
+                                              .map((s) => Chip(label: Text(s)))
+                                              .toList(),
+                                    ),
+                                  ],
+                                ),
+                                trailing: const Icon(Icons.chevron_right),
+                                onTap: () {
+                                  // Navigasi ke detail page (opsional)
+                                },
                               ),
-                              trailing: const Icon(Icons.chevron_right),
-                              onTap: () {
-                                // Navigasi ke detail page (opsional)
-                              },
-                            ),
-                          );
-                        },
-                      ),
+                            );
+                          },
+                        ),
               ),
             ],
           ),
@@ -156,7 +168,6 @@ class _HistoryPageState extends State<HistoryPage> {
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.edit_document), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.assignment), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),

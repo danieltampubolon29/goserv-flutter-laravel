@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\MissionController;
 use App\Http\Controllers\Api\ServiceController;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -17,3 +18,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::apiResource('services', ServiceController::class);
+Route::get('/customers/search', [ServiceController::class, 'searchCustomers']);
+
+Route::apiResource('missions', MissionController::class);
+

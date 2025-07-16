@@ -11,19 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('missions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('customer_name');
-            $table->date('tanggal');
-            $table->string('jenis_kendaraan');
-            $table->string('nomor_polisi');
-            $table->json('service_items');
+            $table->string('nama');
             $table->integer('harga');
             $table->integer('point');
+            $table->date('tanggal_mulai');
+            $table->date('tanggal_selesai');
+            $table->enum('status', ['pending', 'aktif', 'selesai'])->default('pending');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('missions');
     }
 };
