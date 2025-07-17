@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class MissionAdminPage extends StatefulWidget {
   const MissionAdminPage({super.key});
 
@@ -17,7 +19,17 @@ class _MissionAdminPageState extends State<MissionAdminPage> {
   @override
   void initState() {
     super.initState();
+    checkAccess();
     fetchMissions();
+  }
+
+  Future<void> checkAccess() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? role = prefs.getString('role');
+
+    if (role != 'admin') {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
   }
 
   Future<void> fetchMissions() async {

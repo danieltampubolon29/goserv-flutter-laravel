@@ -11,6 +11,21 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   int _selectedIndex = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    checkAccess();
+  }
+
+  Future<void> checkAccess() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? role = prefs.getString('role');
+
+    if (role != 'customer') { 
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+  }
+
   void _onItemTapped(int index) {
     if (index == 1) {
       Navigator.pushNamed(context, '/history');
@@ -26,6 +41,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Future<void> logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('token');
+    prefs.remove('role');
     Navigator.pushReplacementNamed(context, '/');
   }
 
@@ -39,7 +55,6 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header: Home + Profile
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -50,8 +65,8 @@ class _DashboardPageState extends State<DashboardPage> {
                   Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.search),
-                        onPressed: () {},
+                        icon: const Icon(Icons.logout),
+                        onPressed: () => logout(context),
                       ),
                       const CircleAvatar(
                         backgroundImage: AssetImage(
@@ -65,8 +80,6 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
               const SizedBox(height: 16),
-
-              // Card Balance Overview (Ganti "Service Overview")
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -82,7 +95,6 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header Gradien
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(
@@ -104,10 +116,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                     ),
-
                     const Divider(height: 1, color: Colors.grey),
-
-                    // Saldo Point
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -124,11 +133,10 @@ class _DashboardPageState extends State<DashboardPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              // Gunakan Gambar Coin + Teks
                               Row(
                                 children: [
                                   Image.asset(
-                                    'images/coin.png', // <-- ganti dengan path asset koin kamu
+                                    'images/coin.png',
                                     height: 24,
                                     width: 24,
                                   ),
@@ -148,10 +156,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ],
                       ),
                     ),
-
                     const Divider(height: 1, color: Colors.grey),
-
-                    // Tombol Tukar Point
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -178,14 +183,12 @@ class _DashboardPageState extends State<DashboardPage> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 24),
               const Text(
                 "Promo",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               const SizedBox(height: 12),
-              // Service Cards
               Expanded(
                 child: ListView(
                   children: [
@@ -218,8 +221,6 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ),
       ),
-
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -251,7 +252,6 @@ class _DashboardPageState extends State<DashboardPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 12),
-
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
             child: Image.asset(
@@ -261,23 +261,19 @@ class _DashboardPageState extends State<DashboardPage> {
               fit: BoxFit.cover,
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 6),
-
                 Text(
                   title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontWeight: FontWeight.w500),
                 ),
-
                 const SizedBox(height: 6),
-
                 Text(
                   price,
                   style: const TextStyle(
@@ -286,7 +282,6 @@ class _DashboardPageState extends State<DashboardPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 const SizedBox(height: 4),
                 Row(
                   children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardAdminPage extends StatefulWidget {
   const DashboardAdminPage({super.key});
@@ -9,6 +10,20 @@ class DashboardAdminPage extends StatefulWidget {
 
 class _DashboardAdminPageState extends State<DashboardAdminPage> {
   int _selectedIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    checkAccess();
+  }
+
+  Future<void> checkAccess() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? role = prefs.getString('role');
+
+    if (role != 'admin') {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {

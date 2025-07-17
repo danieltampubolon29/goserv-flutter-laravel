@@ -36,7 +36,8 @@ class _LoginPageState extends State<LoginPage> {
       final data = jsonDecode(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', data['token']);
-      await prefs.setString('role', data['role']); // Simpan role
+      await prefs.setString('role', data['role']);
+      await prefs.setInt('user_id', data['user_id']); 
 
       if (data['role'] == 'admin') {
         Navigator.pushReplacementNamed(context, '/dashboard_admin');
