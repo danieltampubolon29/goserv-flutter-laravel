@@ -117,15 +117,4 @@ git clone https://github.com/danieltampubolon29/goserv-flutter-laravel.git [nama
 
 ---
 
-## 📸 Preview
 
-*Screenshots coming soon...*
-
----
-
-## ✨ Kontributor
-
-* Daniel Tampubolon
-* dan Tim GoServ
-
----
